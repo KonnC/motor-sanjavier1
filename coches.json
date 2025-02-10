@@ -1,0 +1,33 @@
+[
+    {
+        "imagen": "https://via.placeholder.com/300",
+        "modelo": "Audi A4 2.0 TDI",
+        "descripcion": "Año 2019, 80.000 km, 150 CV, diésel",
+        "precio": 25000,
+        "kilometros": 80000,
+        "año": 2019,
+        "estado": "available",
+        "estado_texto": "Disponible"
+    },
+    {
+        "imagen": "https://via.placeholder.com/300",
+        "modelo": "BMW Serie 3 320d",
+        "descripcion": "Año 2020, 60.000 km, 190 CV, diésel",
+        "precio": 28000,
+        "kilometros": 60000,
+        "año": 2020,
+        "estado": "reserved",
+        "estado_texto": "Reservado"
+    },
+    {
+        "imagen": "https://via.placeholder.com/300",
+        "modelo": "Mercedes C220d",
+        "descripcion": "Año 2021, 40.000 km, 194 CV, diésel",
+        "precio": 32000,
+        "kilometros": 40000,
+        "año": 2021,
+        "estado": "sold",
+        "estado_texto": "Vendido"
+    }
+]
+
