@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motor San Javier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            color: black;
+        }
+        header {
+            background-color: red;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 24px;
+        }
+        .portada {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        .car-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .car {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+            position: relative;
+        }
+        .car img {
+            width: 100%;
+            height: auto;
+            max-height: 200px;
+            object-fit: cover;
+        }
+        .status {
+            font-weight: bold;
+            padding: 5px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .available {
+            background-color: green;
+            color: white;
+        }
+        .reserved {
+            background-color: yellow;
+            color: black;
+        }
+        .sold {
+            background-color: red;
+            color: white;
+        }
+        button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        footer {
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+        }
+        form {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f4f4f4;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+        }
+        .whatsapp-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: green;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .whatsapp-button img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Motor San Javier
+    </header>
+    <img src="https://www.dropbox.com/scl/fi/awfxks3766xomwh7xja9v/DSC07522.JPG?rlkey=tv4u8te75qbon2kwgqa59bqee&st=xdndm6oy&dl=1" alt="Foto de portada" class="portada">
+    <div class="container">
+        <h2>Coches en Venta</h2>
+        <label for="ordenar">Ordenar por:</label>
+        <select id="ordenar" onchange="ordenarCoches()">
+            <option value="precio-asc">Precio (Menor a Mayor)</option>
+            <option value="precio-desc">Precio (Mayor a Menor)</option>
+            <option value="km-asc">Kilómetros (Menor a Mayor)</option>
+            <option value="km-desc">Kilómetros (Mayor a Menor)</option>
+            <option value="año-asc">Año (Más Antiguo a Más Nuevo)</option>
+            <option value="año-desc">Año (Más Nuevo a Más Antiguo)</option>
+        </select>
+        <div class="car-list" id="car-list">
+            <!-- Aquí se insertarán los coches dinámicamente -->
+        </div>
+    </div>
+    <div class="container">
+        <h2>Contacto</h2>
+        <form>
+            <input type="text" placeholder="Nombre" required>
+            <input type="email" placeholder="Correo Electrónico" required>
+            <textarea placeholder="Mensaje" required></textarea>
+            <button type="submit">Enviar</button>
+        </form>
+        <a href="https://wa.me/34620858026" class="whatsapp-button" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">Contactar por WhatsApp
+        </a>
+    </div>
+    <footer>
+        Contacto: 620858026 | Dirección: Avenida de Balsicas 54 Bajo, San Javier, Murcia
+    </footer>
+    <script>
+        let coches = [];
+        async function cargarCoches() {
+            try {
+                const response = await fetch('coches.json');
+                coches = await response.json();
+                mostrarCoches();
+            } catch (error) {
+                console.error("Error al cargar los coches:", error);
+            }
+        }
+        function mostrarCoches() {
+            const carList = document.getElementById('car-list');
+            carList.innerHTML = '';
+            coches.forEach(coche => {
+                const carDiv = document.createElement('div');
+                carDiv.classList.add('car');
+                carDiv.innerHTML = `
+                    <img src="${coche.imagen}" alt="${coche.modelo}">
+                    <h3>${coche.modelo}</h3>
+                    <p>${coche.descripcion}</p>
+                    <span class="status ${coche.estado}">${coche.estado_texto}</span>
+                    <button onclick="verDetalles('${coche.modelo}')">Más Detalles</button>
+                `;
+                carList.appendChild(carDiv);
+            });
+        }
+        function ordenarCoches() {
+            const criterio = document.getElementById('ordenar').value;
+            coches.sort((a, b) => {
+                switch (criterio) {
+                    case "precio-asc": return a.precio - b.precio;
+                    case "precio-desc": return b.precio - a.precio;
+                    case "km-asc": return a.kilometros - b.kilometros;
+                    case "km-desc": return b.kilometros - a.kilometros;
+                    case "año-asc": return a.año - b.año;
+                    case "año-desc": return b.año - a.año;
+                }
+            });
+            mostrarCoches();
+        }
+        function verDetalles(modelo) {
+            alert("Detalles del coche: " + modelo);
+        }
+        document.addEventListener("DOMContentLoaded", cargarCoches);
+    </script>
+</body>
+</html>
